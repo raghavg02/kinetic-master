@@ -45,7 +45,7 @@ export class ExerciseSeedService {
                 { name: 'Knee Joint', position: 'Center of knee cap', importance: 'critical' }
               ]
             },
-            datasetInfo: { source: 'CaskAI', sampleCount: 15420, accuracy: 94.2, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 15420, accuracy: 94.2, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true
@@ -81,7 +81,7 @@ export class ExerciseSeedService {
               referenceVideo: '/videos/pushup-demo.mp4',
               landmarks: [{ name: 'Elbow', position: 'Center of elbow joint', importance: 'critical' }]
             },
-            datasetInfo: { source: 'CaskAI', sampleCount: 12850, accuracy: 91.8, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 12850, accuracy: 91.8, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true
@@ -115,7 +115,7 @@ export class ExerciseSeedService {
               referenceImage: '/images/plank-correct-form.jpg',
               landmarks: [{ name: 'Hip', position: 'Center of hip joint', importance: 'critical' }]
             },
-            datasetInfo: { source: 'CaskAI', sampleCount: 9850, accuracy: 96.5, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 9850, accuracy: 96.5, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true
@@ -147,7 +147,7 @@ export class ExerciseSeedService {
               tips: ['Maintain balance', 'Control the descent']
             },
             visualGuide: { landmarks: [{ name: 'Knee', position: 'Center of front knee', importance: 'critical' }] },
-            datasetInfo: { source: 'CaskAI', sampleCount: 8400, accuracy: 92.5, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 8400, accuracy: 92.5, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true
@@ -179,7 +179,7 @@ export class ExerciseSeedService {
               tips: ['Squeeze the quad at the top']
             },
             visualGuide: { landmarks: [{ name: 'Knee', position: 'Knee joint pivot', importance: 'critical' }] },
-            datasetInfo: { source: 'CaskAI', sampleCount: 5200, accuracy: 95.0, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 5200, accuracy: 95.0, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true
@@ -211,7 +211,7 @@ export class ExerciseSeedService {
               tips: ['Look forward', 'Breathe out on lift']
             },
             visualGuide: { landmarks: [{ name: 'Shoulder', position: 'Shoulder pivot point', importance: 'critical' }] },
-            datasetInfo: { source: 'CaskAI', sampleCount: 7100, accuracy: 93.8, lastUpdated: new Date(), version: '2.1.0' }
+            datasetInfo: { source: 'Kinetic Master', sampleCount: 7100, accuracy: 93.8, lastUpdated: new Date(), version: '2.1.0' }
           },
           createdBy: new Types.ObjectId(),
           isActive: true

@@ -217,7 +217,7 @@ export class ExerciseService {
             ]
           },
           datasetInfo: {
-            source: 'CaskAI Default Guidance',
+            source: 'Kinetic Master Default Guidance',
             sampleCount: 1000,
             accuracy: 90,
             lastUpdated: new Date(),

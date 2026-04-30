@@ -269,7 +269,7 @@ const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-between text-xs text-gray-500">
             <span>Showing {filteredExercises.length} of {exercises.length} exercises</span>
-            <span>Powered by CaskAI Exercise Dataset</span>
+            <span>Powered by Kinetic Master Exercise Dataset</span>
           </div>
         </div>
       </div>

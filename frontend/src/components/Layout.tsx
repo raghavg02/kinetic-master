@@ -96,7 +96,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         <div className={`fixed inset-y-0 left-0 flex w-64 flex-col ${isDoctorTheme ? 'bg-white/40 backdrop-blur-2xl' : 'bg-white'} shadow-xl`}>
           <div className="flex h-16 items-center justify-between px-4">
-            <h1 className={`text-2xl ${isDoctorTheme ? 'serene-title' : 'font-bold text-primary-600'}`}>CaskAI</h1>
+            <h1 className={`text-2xl ${isDoctorTheme ? 'serene-title' : 'font-bold text-primary-600'}`}>Kinetic Master</h1>
             <button
               onClick={() => setSidebarOpen(false)}
               className="text-gray-400 hover:text-gray-600"
@@ -145,7 +145,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className={`flex flex-col flex-grow ${isDoctorTheme ? 'bg-white/20 backdrop-blur-xl border-r border-white/20' : 'bg-white border-r border-gray-200'} pt-8 pb-4 overflow-y-auto`}>
           <div className="flex items-center flex-shrink-0 px-6 mb-8">
-            <h1 className={`text-2xl ${isDoctorTheme ? 'serene-title' : 'font-bold text-primary-600'}`}>CaskAI</h1>
+            <h1 className={`text-2xl ${isDoctorTheme ? 'serene-title' : 'font-bold text-primary-600'}`}>Kinetic Master</h1>
           </div>
           <nav className="flex-1 px-4 space-y-2 flex flex-col">
             {navItems.map((item) => {

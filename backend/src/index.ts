@@ -52,7 +52,7 @@ app.use(morgan('dev'));
 
 app.options('*', cors()); // Enable pre-flight for all routes
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/caskai';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/Kinetic Master';
 
 mongoose
   .connect(MONGO_URI)

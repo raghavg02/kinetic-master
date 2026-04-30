@@ -115,7 +115,7 @@ const RegisterPage: React.FC = () => {
             <div className="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20">
               <Activity className="h-8 w-8 text-emerald-400" />
             </div>
-            <span className="ml-4 text-3xl font-black tracking-tighter">CaskAI</span>
+            <span className="ml-4 text-3xl font-black tracking-tighter">Kinetic Master</span>
           </motion.div>
 
           <motion.div
@@ -161,7 +161,7 @@ const RegisterPage: React.FC = () => {
               className="lg:hidden flex items-center justify-center mb-6"
             >
               <Activity className="h-8 w-8 text-primary-600" />
-              <span className="ml-2 text-2xl font-bold text-gray-900">CaskAI</span>
+              <span className="ml-2 text-2xl font-bold text-gray-900">Kinetic Master</span>
             </motion.div>
             
             <h2 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">Create Account</h2>
