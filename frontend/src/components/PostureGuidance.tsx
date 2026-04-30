@@ -14,13 +14,36 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
   currentPosture,
   feedback = [],
   isRecording = true,
-  exerciseName = ''
+  exerciseName = '',
 }) => {
   const getAccuracyLevel = (acc: number) => {
-    if (acc >= 85) return { level: 'excellent', color: 'text-green-600', bgColor: 'bg-green-50', borderColor: 'border-green-200' };
-    if (acc >= 70) return { level: 'good', color: 'text-blue-600', bgColor: 'bg-blue-50', borderColor: 'border-blue-200' };
-    if (acc >= 50) return { level: 'fair', color: 'text-yellow-600', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-200' };
-    return { level: 'needs-improvement', color: 'text-red-600', bgColor: 'bg-red-50', borderColor: 'border-red-200' };
+    if (acc >= 85)
+      return {
+        level: 'excellent',
+        color: 'text-green-600',
+        bgColor: 'bg-green-50',
+        borderColor: 'border-green-200',
+      };
+    if (acc >= 70)
+      return {
+        level: 'good',
+        color: 'text-blue-600',
+        bgColor: 'bg-blue-50',
+        borderColor: 'border-blue-200',
+      };
+    if (acc >= 50)
+      return {
+        level: 'fair',
+        color: 'text-yellow-600',
+        bgColor: 'bg-yellow-50',
+        borderColor: 'border-yellow-200',
+      };
+    return {
+      level: 'needs-improvement',
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-200',
+    };
   };
 
   const getPostureTips = (posture: string) => {
@@ -28,36 +51,35 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
       'Standing Straight': [
         'Keep your shoulders back and relaxed',
         'Engage your core muscles',
-        'Distribute weight evenly on both feet'
+        'Distribute weight evenly on both feet',
       ],
-      'Squatting': [
+      Squatting: [
         'Keep your knees aligned with your toes',
         'Lower your body until thighs are parallel to ground',
-        'Keep your chest up and back straight'
+        'Keep your chest up and back straight',
       ],
-      'Leaning Left': [
-        'Shift weight slightly to the right',
-        'Engage your right side core muscles'
-      ],
-      'Leaning Right': [
-        'Shift weight slightly to the left',
-        'Engage your left side core muscles'
-      ],
+      'Leaning Left': ['Shift weight slightly to the right', 'Engage your right side core muscles'],
+      'Leaning Right': ['Shift weight slightly to the left', 'Engage your left side core muscles'],
       'Pushing Up': [
         'Keep your head and neck neutral',
-        'Don\'t let your hips sag',
-        'Exhale as you push away from the ground'
+        "Don't let your hips sag",
+        'Exhale as you push away from the ground',
       ],
-      'Planking': [
+      Planking: [
         'Maintain a straight line from head to heels',
         'Squeeze your glutes and core',
-        'Keep your gaze towards the floor'
+        'Keep your gaze towards the floor',
       ],
-      'Lunging': [
+      Lunging: [
         'Step forward far enough to keep knee over ankle',
         'Keep your torso upright',
-        'Lower your back knee towards the ground'
-      ]
+        'Lower your back knee towards the ground',
+      ],
+      'Shoulder Abduction': [
+        'Keep your back straight and core engaged',
+        'Raise your arm slowly to the side',
+        'Do not shrug your shoulders while lifting',
+      ],
     };
     return tips[posture] || ['Focus on maintaining good form and posture'];
   };
@@ -78,7 +100,8 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
     );
   }
 
-  const accuracyInfo = accuracy !== null && accuracy !== undefined ? getAccuracyLevel(accuracy) : null;
+  const accuracyInfo =
+    accuracy !== null && accuracy !== undefined ? getAccuracyLevel(accuracy) : null;
   const postureTips = getPostureTips(currentPosture);
 
   return (
@@ -87,10 +110,12 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
         <h3 className="text-lg font-medium text-gray-900 mb-4">
           {exerciseName ? `${exerciseName} Guidance` : 'Posture Guidance'}
         </h3>
-        
+
         {/* Accuracy Status */}
         {accuracyInfo && accuracy !== null && accuracy !== undefined && (
-          <div className={`p-4 rounded-lg border ${accuracyInfo.bgColor} ${accuracyInfo.borderColor} mb-4`}>
+          <div
+            className={`p-4 rounded-lg border ${accuracyInfo.bgColor} ${accuracyInfo.borderColor} mb-4`}
+          >
             <div className="flex items-center">
               {accuracy >= 70 ? (
                 <CheckCircle className={`h-5 w-5 ${accuracyInfo.color} mr-2`} />
@@ -98,7 +123,9 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
                 <AlertTriangle className={`h-5 w-5 ${accuracyInfo.color} mr-2`} />
               )}
               <span className={`text-sm font-medium ${accuracyInfo.color}`}>
-                {accuracyInfo.level.charAt(0).toUpperCase() + accuracyInfo.level.slice(1).replace('-', ' ')} Form
+                {accuracyInfo.level.charAt(0).toUpperCase() +
+                  accuracyInfo.level.slice(1).replace('-', ' ')}{' '}
+                Form
               </span>
             </div>
             <div className="mt-2 text-xs text-gray-600">
@@ -123,7 +150,6 @@ const PostureGuidance: React.FC<PostureGuidanceProps> = ({
             </ul>
           </div>
         )}
-
       </div>
     </div>
   );

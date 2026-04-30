@@ -16,84 +16,181 @@ interface ExerciseSimulatorProps {
   activeMistake?: string | null;
 }
 
-const ExerciseSimulator: React.FC<ExerciseSimulatorProps> = ({ 
-  exerciseName, 
+const ExerciseSimulator: React.FC<ExerciseSimulatorProps> = ({
+  exerciseName,
   isRecording,
   speed = 1,
-  activeMistake = null
+  activeMistake = null,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
 
   // Procedural keyframes for different exercises
-  const getFrames = useCallback((name: string, isMistake: boolean = false): SkeletonFrame[] => {
-    const n = name.toLowerCase();
-    const mistake = activeMistake?.toLowerCase() || '';
-    
-    // Squat simulation
-    if (n.includes('squat')) {
-      return Array.from({ length: 60 }, (_, i) => {
-        const t = Math.sin((i / 60) * Math.PI); 
-        let squatDepth = t * 0.3;
-        
-        // Simulate "Go Lower" mistake
-        if (isMistake && (mistake.includes('lower') || mistake.includes('depth'))) {
-            squatDepth = t * 0.12; // Shallow squat
-        }
+  const getFrames = useCallback(
+    (name: string, isMistake: boolean = false): SkeletonFrame[] => {
+      const n = name.toLowerCase();
+      const mistake = activeMistake?.toLowerCase() || '';
 
-        return {
-          points: {
-            head: { x: 0.5, y: 0.1 + squatDepth },
-            shoulder: { x: 0.5, y: 0.2 + squatDepth },
-            hip: { x: 0.5, y: 0.5 + squatDepth },
-            knee_l: { x: 0.4, y: 0.7 + squatDepth * 0.5 },
-            knee_r: { x: 0.6, y: 0.7 + squatDepth * 0.5 },
-            ankle_l: { x: 0.4, y: 0.9 },
-            ankle_r: { x: 0.6, y: 0.9 }
+      // Squat simulation
+      if (n.includes('squat')) {
+        return Array.from({ length: 60 }, (_, i) => {
+          const t = Math.sin((i / 60) * Math.PI);
+          let squatDepth = t * 0.3;
+
+          // If it's a mistake frame, we either show the specific mistake
+          // or just a "bad form" version (shallow squat) if no keyword match
+          if (isMistake) {
+            if (mistake.includes('lower') || mistake.includes('depth') || !mistake) {
+              squatDepth = t * 0.12; // Shallow squat
+            } else {
+              squatDepth = t * 0.35; // Too deep squat
+            }
           }
-        };
-      });
-    }
-    
-    // Pushup simulation
-    if (n.includes('pushup')) {
-      return Array.from({ length: 60 }, (_, i) => {
-        const t = Math.sin((i / 60) * Math.PI);
-        let pushDepth = t * 0.15;
 
-        // Simulate "Hips too high" mistake
-        let hipY = 0.6;
-        if (isMistake && (mistake.includes('hip') || mistake.includes('high'))) {
-            hipY = 0.45; 
-        }
-
-        return {
-          points: {
-            head: { x: 0.2, y: 0.55 + pushDepth },
-            shoulder: { x: 0.3, y: 0.6 + pushDepth },
-            elbow: { x: 0.35, y: 0.75 + pushDepth * 0.3 },
-            hip: { x: 0.6, y: hipY },
-            ankle: { x: 0.9, y: 0.6 }
-          }
-        };
-      });
-    }
-
-    // Default standing/idle
-    return [{
-      points: {
-        head: { x: 0.5, y: 0.1 },
-        shoulder: { x: 0.5, y: 0.2 },
-        hip: { x: 0.5, y: 0.5 },
-        knee_l: { x: 0.4, y: 0.7 },
-        knee_r: { x: 0.6, y: 0.7 },
-        ankle_l: { x: 0.4, y: 0.9 },
-        ankle_r: { x: 0.6, y: 0.9 }
+          return {
+            points: {
+              head: { x: 0.5, y: 0.1 + squatDepth },
+              shoulder: { x: 0.5, y: 0.2 + squatDepth },
+              hip: { x: 0.5, y: 0.5 + squatDepth },
+              knee_l: { x: 0.4, y: 0.7 + squatDepth * 0.5 },
+              knee_r: { x: 0.6, y: 0.7 + squatDepth * 0.5 },
+              ankle_l: { x: 0.4, y: 0.9 },
+              ankle_r: { x: 0.6, y: 0.9 },
+            },
+          };
+        });
       }
-    }];
-  }, [activeMistake]);
 
-  const drawSkeleton = (ctx: CanvasRenderingContext2D, frame: SkeletonFrame, color: string, alpha: number = 1) => {
+      // Pushup simulation
+      if (n.includes('pushup')) {
+        return Array.from({ length: 60 }, (_, i) => {
+          const t = Math.sin((i / 60) * Math.PI);
+          let pushDepth = t * 0.15;
+
+          // If it's a mistake frame, default to "high hips" if no keyword match
+          let hipY = 0.6;
+          if (isMistake) {
+            if (mistake.includes('hip') || mistake.includes('high') || !mistake) {
+              hipY = 0.45; // Hips too high
+            } else {
+              pushDepth = t * 0.05; // Shallow pushup
+            }
+          }
+
+          return {
+            points: {
+              head: { x: 0.2, y: 0.55 + pushDepth },
+              shoulder: { x: 0.3, y: 0.6 + pushDepth },
+              elbow_l: { x: 0.35, y: 0.75 + pushDepth * 0.3 },
+              hip: { x: 0.6, y: hipY + pushDepth * 0.5 },
+              knee_l: { x: 0.75, y: 0.6 + pushDepth * 0.2 },
+              ankle_l: { x: 0.9, y: 0.6 },
+            },
+          };
+        });
+      }
+
+      // Shoulder Abduction simulation
+      if (n.includes('shoulder abduction')) {
+        return Array.from({ length: 60 }, (_, i) => {
+          const t = Math.sin((i / 60) * Math.PI);
+          let liftAngle = t * 0.4; // 0 to 0.4 height lift
+
+          // If mistake, default to low lift
+          if (isMistake) {
+            if (mistake.includes('higher') || mistake.includes('lift') || !mistake) {
+              liftAngle = t * 0.15; // Low lift
+            } else {
+              liftAngle = t * 0.5; // Too high lift
+            }
+          }
+
+          return {
+            points: {
+              head: { x: 0.5, y: 0.1 },
+              shoulder: { x: 0.5, y: 0.2 },
+              hip: { x: 0.5, y: 0.5 },
+              elbow_l: { x: 0.4 - liftAngle, y: 0.2 + liftAngle * 0.2 },
+              wrist_l: { x: 0.35 - liftAngle * 1.5, y: 0.2 + liftAngle * 0.5 },
+              knee_l: { x: 0.4, y: 0.7 },
+              knee_r: { x: 0.6, y: 0.7 },
+              ankle_l: { x: 0.4, y: 0.9 },
+              ankle_r: { x: 0.6, y: 0.9 },
+            },
+          };
+        });
+      }
+
+      // Lunge simulation
+      if (n.includes('lunge')) {
+        return Array.from({ length: 60 }, (_, i) => {
+          const t = Math.sin((i / 60) * Math.PI);
+          let lungeDepth = t * 0.25;
+
+          // If mistake, default to shallow lunge
+          if (isMistake) {
+            lungeDepth = t * 0.12;
+          }
+
+          return {
+            points: {
+              head: { x: 0.5, y: 0.1 + lungeDepth },
+              shoulder: { x: 0.5, y: 0.2 + lungeDepth },
+              hip: { x: 0.5, y: 0.5 + lungeDepth },
+              knee_l: { x: 0.6 + lungeDepth * 0.5, y: 0.7 + lungeDepth },
+              ankle_l: { x: 0.6, y: 0.9 },
+              knee_r: { x: 0.4, y: 0.8 },
+              ankle_r: { x: 0.3, y: 0.9 },
+            },
+          };
+        });
+      }
+
+      // Plank simulation
+      if (n.includes('plank')) {
+        return Array.from({ length: 60 }, (_, i) => {
+          const t = Math.sin((i / 60) * Math.PI * 10) * 0.005;
+          let hipY = 0.75;
+
+          // If mistake, drop the hips
+          if (isMistake) {
+            hipY = 0.82;
+          }
+
+          return {
+            points: {
+              head: { x: 0.2, y: 0.7 + t },
+              shoulder: { x: 0.3, y: 0.75 + t },
+              elbow_l: { x: 0.3, y: 0.85 },
+              hip: { x: 0.6, y: hipY + t },
+              ankle_l: { x: 0.9, y: 0.75 },
+            },
+          };
+        });
+      }
+
+      // Default standing/idle
+      return Array.from({ length: 60 }, () => ({
+        points: {
+          head: { x: 0.5, y: 0.1 },
+          shoulder: { x: 0.5, y: 0.2 },
+          hip: { x: 0.5, y: 0.5 },
+          knee_l: { x: 0.4, y: 0.7 },
+          knee_r: { x: 0.6, y: 0.7 },
+          ankle_l: { x: 0.4, y: 0.9 },
+          ankle_r: { x: 0.6, y: 0.9 },
+        },
+      }));
+    },
+    [activeMistake]
+  );
+
+  const drawSkeleton = (
+    ctx: CanvasRenderingContext2D,
+    frame: SkeletonFrame,
+    color: string,
+    alpha: number = 1
+  ) => {
     const { width, height } = ctx.canvas;
     const pts = frame.points;
     const scale = (p: Point) => ({ x: p.x * width, y: p.y * height });
@@ -114,25 +211,32 @@ const ExerciseSimulator: React.FC<ExerciseSimulatorProps> = ({
     };
 
     if (pts.head) {
-        const head = scale(pts.head);
-        ctx.beginPath();
-        ctx.arc(head.x, head.y, 10, 0, Math.PI * 2);
-        ctx.stroke();
+      const head = scale(pts.head);
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 10, 0, Math.PI * 2);
+      ctx.stroke();
     }
-    
+
     if (pts.head && pts.shoulder) drawLine(pts.head, pts.shoulder);
     if (pts.shoulder && pts.hip) drawLine(pts.shoulder, pts.hip);
+
+    // Left side legs
     if (pts.hip && pts.knee_l) drawLine(pts.hip, pts.knee_l);
     if (pts.knee_l && pts.ankle_l) drawLine(pts.knee_l, pts.ankle_l);
+    // Right side legs
     if (pts.hip && pts.knee_r) drawLine(pts.hip, pts.knee_r);
     if (pts.knee_r && pts.ankle_r) drawLine(pts.knee_r, pts.ankle_r);
-    if (pts.knee && !pts.knee_l) drawLine(pts.hip, pts.knee);
-    if (pts.knee && pts.ankle) drawLine(pts.knee, pts.ankle);
+
+    // Direct hip to ankle if knee missing (like in some pushup/plank models)
+    if (pts.hip && pts.ankle_l && !pts.knee_l) drawLine(pts.hip, pts.ankle_l);
+    if (pts.hip && pts.ankle_r && !pts.knee_r) drawLine(pts.hip, pts.ankle_r);
+
+    // Arms
     if (pts.shoulder && pts.elbow_l) drawLine(pts.shoulder, pts.elbow_l);
     if (pts.elbow_l && pts.wrist_l) drawLine(pts.elbow_l, pts.wrist_l);
     if (pts.shoulder && pts.elbow_r) drawLine(pts.shoulder, pts.elbow_r);
     if (pts.elbow_r && pts.wrist_r) drawLine(pts.elbow_r, pts.wrist_r);
-    
+
     ctx.globalAlpha = 1.0;
   };
 
@@ -144,7 +248,7 @@ const ExerciseSimulator: React.FC<ExerciseSimulatorProps> = ({
 
     const correctFrames = getFrames(exerciseName, false);
     const mistakeFrames = getFrames(exerciseName, true);
-    
+
     let frameId: number;
     const animate = () => {
       const { width, height } = canvas;
@@ -175,23 +279,24 @@ const ExerciseSimulator: React.FC<ExerciseSimulatorProps> = ({
   return (
     <div className="relative bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
       <div className="absolute top-3 left-3 z-10 flex flex-col space-y-1">
-        <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded w-fit ${activeMistake ? 'bg-red-100 text-red-700' : 'bg-indigo-100 text-indigo-700'}`}>
+        <span
+          className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded w-fit ${activeMistake ? 'bg-red-100 text-red-700' : 'bg-indigo-100 text-indigo-700'}`}
+        >
           {activeMistake ? 'Mistake Detected' : 'Guide'}
         </span>
         {activeMistake && (
-            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-bold uppercase tracking-wider rounded w-fit">
-                Follow Green Ghost
-            </span>
+          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-bold uppercase tracking-wider rounded w-fit">
+            Follow Green Ghost
+          </span>
         )}
       </div>
-      <canvas 
-        ref={canvasRef} 
-        width={300} 
-        height={200} 
-        className="w-full h-40 object-contain"
-      />
-      <div className={`p-2 border-t ${activeMistake ? 'bg-red-50 border-red-100' : 'bg-indigo-50 border-indigo-100'}`}>
-        <p className={`text-[10px] text-center font-bold uppercase ${activeMistake ? 'text-red-600' : 'text-indigo-600'}`}>
+      <canvas ref={canvasRef} width={300} height={200} className="w-full h-40 object-contain" />
+      <div
+        className={`p-2 border-t ${activeMistake ? 'bg-red-50 border-red-100' : 'bg-indigo-50 border-indigo-100'}`}
+      >
+        <p
+          className={`text-[10px] text-center font-bold uppercase ${activeMistake ? 'text-red-600' : 'text-indigo-600'}`}
+        >
           {activeMistake ? activeMistake : 'WATCH & FOLLOW THIS MOTION'}
         </p>
       </div>
