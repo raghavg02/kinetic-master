@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+ml-backend/venv/
+ml-backend/__pycache__/
+
+# Production Builds
+frontend/build/
+backend/dist/
+
+# ML Models (Large Files)
+ml-backend/models/*.keras
+ml-backend/models/*.h5
+ml-backend/models/*.pb
+ml-backend/models/*.tflite
+
+# Environment & Secrets
+.env
+backend/.env
+frontend/.env
+ml-backend/.env
+*.pem
+*.key
+
+# Logs & Cache
+*.log
+npm-debug.log*
+.eslintcache
+.cache/
+backend/.cache/
+frontend/.cache/
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
+dist/
+tmp/
